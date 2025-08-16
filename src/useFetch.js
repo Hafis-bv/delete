@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 export function useFetch() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function getPro() {
@@ -11,12 +13,18 @@ export function useFetch() {
         setPosts(data);
       } catch (e) {
         console.log(e);
+        setError(e.message);
+      } finally {
+        setLoading(false);
       }
     }
 
     getPro();
   }, []);
+
   return {
+    error,
+    loading,
     posts,
   };
 }
